@@ -1,0 +1,8 @@
+# Demo-only: allow guest connections from a different Pod.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vprormq-config
+data:
+  rabbitmq.conf: |
+    loopback_users = none

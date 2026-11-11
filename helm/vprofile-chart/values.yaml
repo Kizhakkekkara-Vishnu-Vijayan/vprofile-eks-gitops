@@ -1,0 +1,54 @@
+# Your GitHub Actions workflow should update ONLY app.image.tag.
+app:
+  replicas: 1
+  image:
+    repository: docvishnu1/vprofileapp
+    tag: "REPLACE_AFTER_FIRST_IMAGE_BUILD"
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+db:
+  image:
+    repository: docvishnu1/vprofiledb
+    tag: "bootstrap" # Pin the version you actually published.
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 150m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 768Mi
+
+mc:
+  image: memcached:1.6
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 150m
+      memory: 128Mi
+
+rmq:
+  image: rabbitmq:4.1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi
+
+ingress:
+  enabled: true
+  className: nginx
+  host: vprofile.vishnuhosting.xyz
+  # Once HTTPS is configured, set a Kubernetes TLS Secret name here.
+  tlsSecretName: ""

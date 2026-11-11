@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprodb
+  labels:
+    app: vprodb
+spec:
+  replicas: 1
+  # Single PVC RWO: do NOT run the new and old MySQL pods together.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: vprodb
+  template:
+    metadata:
+      labels:
+        app: vprodb
+    spec:
+      initContainers:
+        - name: remove-empty-lost-found
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              # Only remove the empty ext4 folder, never database content.
+              if [ -d /var/lib/mysql/lost+found ]; then
+                rmdir /var/lib/mysql/lost+found || true
+              fi
+          volumeMounts:
+            - name: vpro-db-data
+              mountPath: /var/lib/mysql
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      containers:
+        - name: vprodb
+          image: "{{ .Values.db.image.repository }}:{{ .Values.db.image.tag }}"
+          imagePullPolicy: {{ .Values.db.image.pullPolicy }}
+          ports:
+            - name: mysql
+              containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: db-pass
+          resources:
+{{ toYaml .Values.db.resources | indent 12 }}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: vpro-db-data
+      volumes:
+        - name: vpro-db-data
+          persistentVolumeClaim:
+            claimName: db-pv-claim

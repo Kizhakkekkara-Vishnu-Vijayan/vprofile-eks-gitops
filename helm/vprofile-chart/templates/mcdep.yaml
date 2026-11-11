@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vpromc
+  labels:
+    app: vpromc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vpromc
+  template:
+    metadata:
+      labels:
+        app: vpromc
+    spec:
+      containers:
+        - name: vpromc
+          image: {{ .Values.mc.image | quote }}
+          args: ["-m", "64", "-c", "128"]
+          ports:
+            - name: memcache
+              containerPort: 11211
+          resources:
+{{ toYaml .Values.mc.resources | indent 12 }}

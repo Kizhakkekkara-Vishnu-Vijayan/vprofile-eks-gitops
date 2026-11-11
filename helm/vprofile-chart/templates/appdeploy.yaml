@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vproapp
+  labels:
+    app: vproapp
+spec:
+  replicas: {{ .Values.app.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: vproapp
+  template:
+    metadata:
+      labels:
+        app: vproapp
+    spec:
+      initContainers:
+        - name: init-all
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo 'Waiting for MySQL, Memcached and RabbitMQ TCP ports...'
+              for target in vprodb:3306 vprocache01:11211 vpromq01:5672; do
+                host="${target%:*}"
+                port="${target#*:}"
+                until nc -z -w 2 "$host" "$port"; do
+                  echo "Waiting for $host:$port"
+                  sleep 3
+                done
+              done
+              echo 'Dependency ports reachable'
+          resources:
+            requests:
+              cpu: 25m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      containers:
+        - name: vproapp
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+{{ toYaml .Values.app.resources | indent 12 }}
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 36
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3

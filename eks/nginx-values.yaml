@@ -1,0 +1,14 @@
+# Install with the F5 NGINX Open Source Helm chart, separately from the VProfile Helm chart.
+# Requires AWS Load Balancer Controller installed and public subnet discovery working.
+controller:
+  nginxplus: false
+  replicaCount: 1
+  ingressClass:
+    name: nginx
+    create: true
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "external"
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
