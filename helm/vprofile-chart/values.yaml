@@ -3,7 +3,7 @@ app:
   replicas: 1
   image:
     repository: docvishnu1/vprofileapp
-    tag: "REPLACE_AFTER_FIRST_IMAGE_BUILD"
+    tag: "sha-93773bd17c44eea24f44bfd51d4b6fbb17fd1b63"
     pullPolicy: IfNotPresent
   resources:
     requests:
