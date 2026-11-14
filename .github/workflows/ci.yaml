@@ -10,7 +10,8 @@ on:
       - 'bootstrap/**'
       - 'argocd/**'
       - 'eks/**'
-        #- 'README.md'
+      - 'README.md'
+      - 'docs/**'
 
   workflow_dispatch:
 

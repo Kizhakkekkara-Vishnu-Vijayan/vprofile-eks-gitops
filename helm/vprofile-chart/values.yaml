@@ -51,4 +51,4 @@ ingress:
   className: nginx
   host: vprofile.vishnuhosting.xyz
   # Once HTTPS is configured, set a Kubernetes TLS Secret name here.
-  tlsSecretName: ""
+  tlsSecretName: vprofile-tls
