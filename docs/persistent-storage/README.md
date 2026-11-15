@@ -296,4 +296,4 @@ aws eks list-addons --cluster-name vprofile-eks --region ap-southeast-2
 
 ## What comes next
 
-[Phase 04 - AWS Load Balancer Controller, NGINX Ingress and public NLB](../load-balancer/README.md) (future chapter). This will document `eks/nginx-values.yaml`, the AWS controller, NGINX Helm installation, NLB DNS hostname and the verified HTTP 404-to-200 routing tests.
+[Phase 04 - AWS Load Balancer Controller, NGINX Ingress and public NLB](../load-balancing/README.md) (future chapter). This will document `eks/nginx-values.yaml`, the AWS controller, NGINX Helm installation, NLB DNS hostname and the verified HTTP 404-to-200 routing tests.
