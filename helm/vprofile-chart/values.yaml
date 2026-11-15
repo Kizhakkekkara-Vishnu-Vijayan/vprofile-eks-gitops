@@ -3,7 +3,7 @@ app:
   replicas: 1
   image:
     repository: docvishnu1/vprofileapp
-    tag: "sha-9476ea95dfdd97034846cf64f83653b94e6c9309"
+    tag: "sha-ddc397abe0ddd94b66687bb48135e9352cae8bdd"
     pullPolicy: IfNotPresent
   resources:
     requests:
