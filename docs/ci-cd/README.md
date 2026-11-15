@@ -369,4 +369,4 @@ The commented `README.md` entry means changing the root README alone **currently
 - [ ] Separate Docker Hub screenshot of `vprofiledb:bootstrap` (optional evidence gap)
 - [ ] Detailed Maven test-case totals (optional evidence gap)
 
-**Next:** [Phase 6 - Argo CD synchronization and Kubernetes workload verification](../argocd/README.md) (to be prepared using the Phase 6 evidence upload).
+**Next:** [Phase 6 - Argo CD synchronization and Kubernetes workload verification](../argo-cd/README.md) (to be prepared using the Phase 6 evidence upload).
