@@ -1,0 +1,29 @@
+# Evidence transcribed from uploaded Phase 5 PDF, page 8 (line wrapping normalized).
+# Capture date in source: November 2026. This is not a fresh live command execution.
+
+$ git pull --ff-only origin main
+From https://github.com/Kizhakkekkara-Vishnu-Vijayan/vprofile-eks-gitops
+   93773bd..c87b615  main -> origin/main
+Updating 93773bd..c87b615
+Fast-forward
+ helm/vprofile-chart/values.yaml           | 2 +-
+ src/main/webapp/WEB-INF/views/welcome.jsp | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+$ git log -5 --oneline
+c87b615 (HEAD -> main, origin/main) ci: update VProfile image to sha-fa861db71e4f64e2706e021d1d5f08ed091fd008
+fa861db Update welcome.jsp
+be12a98 ci: update VProfile image to sha-93773bd17c44eea24f44bfd51d4b6fbb17fd1b63
+93773bd Automate Docker image tag updates in Helm
+da7b1ed Add Argo CD Application manifest
+
+$ grep -A 5 '^app:' helm/vprofile-chart/values.yaml
+app:
+  replicas: 1
+  image:
+    repository: docvishnu1/vprofileapp
+    tag: "sha-fa861db71e4f64e2706e021d1d5f08ed091fd008"
+    pullPolicy: IfNotPresent
+
+$ kubectl get deployment vproapp -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
+docvishnu1/vprofileapp:sha-fa861db71e4f64e2706e021d1d5f08ed091fd008

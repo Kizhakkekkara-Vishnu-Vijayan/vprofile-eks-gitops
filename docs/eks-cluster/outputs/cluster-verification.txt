@@ -1,0 +1,35 @@
+# Phase 02 EKS terminal output - redacted, manually transcribed from uploaded screenshot
+# Timestamp: screenshot collected 14 Nov 2026; prior cluster was created 11 Nov 2026.
+# Resource IDs, IPs and EC2 host names omitted for public documentation.
+
+eksctl get cluster --region ap-southeast-2
+NAME          REGION          EKSCTL CREATED
+vprofile-eks  ap-southeast-2  True
+
+eksctl get nodegroup --cluster vprofile-eks --region ap-southeast-2
+CLUSTER        NODEGROUP         STATUS  MIN SIZE  MAX SIZE  DESIRED CAPACITY  INSTANCE TYPE         IMAGE ID
+vprofile-eks   vprofile-workers  ACTIVE  1         1         1                 c7i-flex.large        AL2023_x86_64_STANDARD
+
+kubectl get nodes -o wide
+NAME          STATUS   VERSION                  OS-IMAGE              CONTAINER-RUNTIME
+[REDACTED]    Ready    v1.36.5-eks-8418f54    Amazon Linux 2023     containerd://2.3.7+unknown
+
+kubectl get pods -n kube-system
+aws-load-balancer-controller        1/1 Running 0
+aws-node                             2/2 Running 0
+coredns                              1/1 Running 0 (2 pods)
+ebs-csi-controller                   6/6 Running 0 (2 pods)
+ebs-csi-node                         3/3 Running 0
+eks-pod-identity-agent               1/1 Running 0
+kube-proxy                           1/1 Running 0
+metrics-server                       1/1 Running 0 (2 pods)
+
+aws eks list-addons --cluster-name vprofile-eks --region ap-southeast-2
+  aws-ebs-csi-driver
+  coredns
+  eks-pod-identity-agent
+  kube-proxy
+  metrics-server
+  vpc-cni
+
+# Note: the screenshot was captured AFTER EBS CSI and Load Balancer Controller installations.

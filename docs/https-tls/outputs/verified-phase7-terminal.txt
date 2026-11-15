@@ -1,0 +1,54 @@
+SOURCE: User-uploaded Untitled document (7).pdf (4 pages), 14 November 2026
+This output is a curated transcription of user-provided terminal logs. The browser image is extracted from page 4.
+
+$ kubectl get secret vprofile-tls -n default
+NAME           TYPE                DATA   AGE
+vprofile-tls   kubernetes.io/tls   2      164m
+
+$ kubectl describe ingress vpro-ingress
+Name:             vpro-ingress
+Namespace:        default
+Address:          k8s-nginxing-nginxing-f3b178828e-64826e286029cc10.elb.ap-southeast-2.amazonaws.com
+Ingress Class:    nginx
+TLS:
+  vprofile-tls terminates vprofile.vishnuhosting.xyz
+Rules:
+  Host: vprofile.vishnuhosting.xyz
+  /  vproapp-service:8080 (192.168.8.49:8080)
+Annotations:
+  argocd.argoproj.io/tracking-id: vprofile:networking.k8s.io/Ingress:default/vpro-ingress
+  nginx.org/ssl-redirect: true
+
+$ kubectl get applications -n argocd
+NAME       SYNC STATUS   HEALTH STATUS
+vprofile   Synced        Healthy
+
+$ kubectl get pods -o wide
+NAME                        READY STATUS  RESTARTS
+vproapp-b7f4dfc7b-st7rp     1/1   Running 0
+vprodb-76c7744966-xdkr9    1/1   Running 0
+vpromc-569979c599-4jdvd    1/1   Running 0
+vprormq-5fbb864db6-tlh4w   1/1   Running 0
+All four pods shown on the same EKS worker (node ip-192-168-8-222.ap-southeast-2.compute.internal).
+
+$ curl -I https://vprofile.vishnuhosting.xyz
+HTTP/1.1 200
+Server: nginx/1.31.8
+Content-Type: text/html;charset=ISO-8859-1
+Content-Length: 7935
+Set-Cookie: JSESSIONID=[REDACTED]; Path=/; HttpOnly
+
+$ curl -Iv https://vprofile.vishnuhosting.xyz
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519 / id-ecPublicKey
+* subject: CN=*.vishnuhosting.xyz
+* start date: Nov 14 10:37:40 2026 GMT
+* expire date: Feb 12 10:37:39 2027 GMT
+* subjectAltName: host "vprofile.vishnuhosting.xyz" matched cert's "*.vishnuhosting.xyz"
+* issuer: C=US; O=Let's Encrypt; CN=YE1
+* SSL certificate verify ok.
+< HTTP/1.1 200
+
+$ curl -I http://vprofile.vishnuhosting.xyz
+HTTP/1.1 301 Moved Permanently
+Server: nginx/1.31.8
+Location: https://vprofile.vishnuhosting.xyz:443/

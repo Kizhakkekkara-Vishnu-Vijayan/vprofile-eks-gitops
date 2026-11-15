@@ -1,0 +1,12 @@
+# Recommendation only. Merge this list into the existing push.paths-ignore of
+# .github/workflows/ci.yaml. Do not use as a standalone GitHub workflow.
+paths-ignore:
+  - 'helm/**'
+  - 'kubedefs/**'
+  - 'bootstrap/**'
+  - 'argocd/**'
+  - 'eks/**'
+  - 'README.md'
+  - 'docs/**'
+  - 'Docker-files/README.md'
+  - '.github/workflows/README.md'

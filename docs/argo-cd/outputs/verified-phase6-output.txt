@@ -1,0 +1,54 @@
+PHASE 6 - VERBATIM EXCERPTS FROM USER-UPLOADED EVIDENCE
+Source: Untitled document (6).pdf, pages 2-10; captured 2026-11-14
+
+$ kubectl get applications -n argocd
+NAME       SYNC STATUS   HEALTH STATUS
+vprofile   Synced        Healthy
+
+$ kubectl describe application vprofile -n argocd
+[Selected relevant fields; other metadata omitted]
+Destination: namespace=default, server=https://kubernetes.default.svc
+Project: default
+Source: repoURL=https://github.com/Kizhakkekkara-Vishnu-Vijayan/vprofile-eks-gitops.git
+Source: path=helm/vprofile-chart, targetRevision=main, helm.releaseName=vprofile
+Automated: enabled=true, prune=false, selfHeal=true
+Sync Options: CreateNamespace=false
+History: 2026-11-11T17:48:33Z, revision be12a981077b75a919d3024543c5c8253742e213, initiated by admin
+History: 2026-11-12T11:51:20Z, revision c87b6152ba64d11492bf781174ce726598c46bfe, initiated by admin
+History: 2026-11-14T09:48:19Z, revision 8cac0ee1cc6472c02bf66ebc75b72aabed61a694, initiated by admin
+History: 2026-11-14T09:58:47Z, revision c2e57d19d6dfcf68f005a2901d181da96096b9da, initiated by automated sync
+Operation: successfully synced (all tasks run)
+Deployment image: docvishnu1/vprofileapp:sha-c638788ed41336ae2392125df5b6826ae86e6d66
+Events: status Synced -> OutOfSync -> Synced; health Healthy -> Progressing -> Healthy
+
+$ kubectl get deployments -n default
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+vproapp   1/1     1            1           2d16h
+vprodb    1/1     1            1           2d16h
+vpromc    1/1     1            1           2d16h
+vprormq   1/1     1            1           2d16h
+
+$ kubectl get pods -o wide
+NAME                       READY   STATUS    RESTARTS   AGE
+vproapp-5b46c8c97b-vq4w8   1/1     Running   0          38m
+vprodb-76c7744966-xdkr9    1/1     Running   0          2d16h
+vpromc-569979c599-4jdvd    1/1     Running   0          2d16h
+vprormq-5fbb864db6-tlh4w   1/1     Running   0          2d16h
+
+$ kubectl get svc
+NAME              TYPE        CLUSTER-IP      PORT(S)
+vproapp-service   ClusterIP   10.100.31.201   8080/TCP
+vprocache01       ClusterIP   10.100.90.220   11211/TCP
+vprodb            ClusterIP   10.100.69.176   3306/TCP
+vpromq01          ClusterIP   10.100.72.35    5672/TCP
+
+$ kubectl get ingress
+NAME           CLASS   HOSTS                        PORTS
+vpro-ingress   nginx   vprofile.vishnuhosting.xyz   80
+
+$ kubectl get deployment vproapp -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
+docvishnu1/vprofileapp:sha-c638788ed41336ae2392125df5b6826ae86e6d66
+
+$ kubectl top nodes
+NAME                                               CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)
+ip-192-168-8-222.ap-southeast-2.compute.internal   114m         5%       2360Mi          75%

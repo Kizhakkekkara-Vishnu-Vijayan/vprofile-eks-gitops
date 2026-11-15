@@ -1,0 +1,38 @@
+# Phase 03 - Kubernetes storage verification (source-derived transcription)
+# Source: 14 Nov 2026 uploaded "Untitled document (2).pdf", screenshots 1-3
+# Transcription is abbreviated; IDs, hostnames and account identifiers masked in public assets.
+
+AWS EKS Console > vprofile-eks > Add-ons:
+  Amazon EBS CSI Driver: Active, v1.67.2-eksbuild.1
+    Permission mode: EKS Pod Identity role shown; IRSA role not set
+  Amazon EKS Pod Identity Agent: Active, v1.4.1-eksbuild.3
+  Total add-ons in cluster: 6 (only two shown on selected page)
+
+AWS EC2 Console > Elastic Block Store > Volumes:
+  Selected volume name: vprofile-eks-dynamic-pvc-[PVC-UUID]
+  Type: gp3
+  Size: 5 GiB
+  Volume state: In-use
+  Status checks: Okay
+  Provisioned IOPS: 3000
+  Provisioned throughput: 125 MiB/s
+  Availability zone: ap-southeast-2a
+  Attachment: EKS managed worker
+  Note: Snapshot, owner and volume identifiers redacted for public publication.
+
+Actual commands and significant output from Screenshot 3:
+
+kubectl get storageclass
+NAME  PROVISIONER              RECLAIMPOLICY  VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION
+gp2   kubernetes.io/aws-ebs   Delete         WaitForFirstConsumer   false
+gp3   ebs.csi.aws.com         Delete         WaitForFirstConsumer   true
+
+kubectl get pv
+NAME                                      CAPACITY  ACCESS MODES  RECLAIM POLICY  STATUS  CLAIM               STORAGECLASS
+pvc-9fa213b6-[REDACTED]                   5Gi       RWO           Delete          Bound   default/db-pv-claim  gp3
+
+kubectl get pvc
+NAME          STATUS  VOLUME                   CAPACITY  ACCESS MODES  STORAGECLASS
+db-pv-claim   Bound   pvc-9fa213b6-[REDACTED]  5Gi       RWO           gp3
+
+# Evidence note: this screenshot is a point-in-time verification, not a continuous monitor.

@@ -1,0 +1,14 @@
+{
+  "phase": "07",
+  "source_file": "Untitled document (7).pdf",
+  "source_pages": 4,
+  "actual_images_from_uploaded_pdf": [
+    "screenshots/browser-le-certificate-redacted.png"
+  ],
+  "prior_chat_screenshots": [
+    "screenshots/godaddy-txt-records-redacted.png"
+  ],
+  "original_private_key_included": false,
+  "verified": "TLS1.3, LE YE1 hostname matches, HTTPS200, HTTP301, synced healthy, 4 pods running no restarts",
+  "not_verified": "automatic renewal, Secure session cookie, internal TLS, all business features"
+}
